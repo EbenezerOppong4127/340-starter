@@ -4,3 +4,67 @@
 *:after {
   box-sizing: border-box;
 }
+
+/* Base styles for mobile first */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.hero {
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-img {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.featured-cars {
+  padding: 20px;
+}
+
+.car-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.car-item img {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .car-list {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
