@@ -1,9 +1,9 @@
 :root {
-  --primary-fg: rgb(115, 16, 16);
+  --primary-fg: rgb(22, 28, 25);
   --primary-bg: rgb(234, 242, 247);
   --secondary-fg: rgb(236, 229, 209);
-  --secondary-bg: rgb(41, 84, 18);
-  --pop: rgb(170, 7, 7);
+  --secondary-bg: rgb(36, 71, 110);
+  --pop: rgb(234, 117, 21);
   --decorative-font: "Anta", sans-serif;
   --body-font: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -17,6 +17,10 @@
 
 header, footer, main {
   padding: 1rem;
+}
+
+.txt-footer{
+  text-align: center;
 }
 
 body {
