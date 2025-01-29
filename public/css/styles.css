@@ -21,6 +21,7 @@ header, footer, main {
 
 .txt-footer{
   text-align: center;
+  display: block;
 }
 
 body {
