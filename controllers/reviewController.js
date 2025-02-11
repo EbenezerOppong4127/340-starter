@@ -1,5 +1,4 @@
 const reviewModel = require('../models/review-model');
-const utilities = require('../utilities');
 
 // Display reviews for a specific vehicle
 async function displayReviews(req, res) {
