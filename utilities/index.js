@@ -142,6 +142,46 @@ Util.buildItemListing = async function (data) {
   return listingHTML;
 };
 
+Util.buildReviewSection = async function (reviews, accountId, invId) {
+  let reviewsHTML = `
+    <section class="reviews">
+      <h3>Customer Reviews</h3>
+      ${reviews.length > 0 ?
+      reviews.map(review => {
+        console.log("Review Account ID:", review.account_id, "Logged-in Account ID:", accountId, invId , review.review_id); // Debugging log
+        return `
+            <div class="review" id="review_${review.review_id}">
+              <p class="user-information"><strong class="user-name">${review.account_firstname} ${review.account_lastname}</strong> - ${new Date(review.review_date).toLocaleString()}</p>
+              <p class="review-text txt-to-style">${review.review_text}</p>
+              ${review.account_id === accountId ? `
+             <div class="button-container">
+  <form action="/rev/reviews/delete/${review.review_id}" method="POST">
+    <button type="submit" class="sub_delete">Delete</button>
+  </form>
+  <a href="#" class="update-review-btn sub_update_btn" data-review-id="${review.review_id}">Update</a>
+</div>
+
+              ` : ''}
+            </div>
+          `;
+      }).join('')
+      : '<p>No reviews yet. Be the first to leave one!</p>'}
+    </section>
+    
+    <section class="add-review">
+      <h3>Leave a Review</h3>
+      <form action="/rev/reviews/add" method="POST">
+        <input type="hidden" name="invId" value="${invId}">
+        <input type="hidden" name="accountId" value="${accountId}">
+        <textarea class="saveItlocal" name="reviewText" placeholder="Write your review..." required></textarea>
+        <button type="submit" class="sub_review">Submit Review</button>
+      </form>
+    </section>
+  `;
+
+  return reviewsHTML;
+};
+
 /**
  * Build an HTML select element with classification data
  * @param {int} classification_id
@@ -266,8 +306,8 @@ Util.checkAuthorizationManager = (req, res, next) => {
 
 /**
  * Build an html table string from the message array
- * @param {Array<Message>} messages
- * @returns
+ * @param {Array<Message>} messages 
+ * @returns 
  */
 Util.buildInbox = (messages) => {
   inboxList = `

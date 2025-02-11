@@ -1,0 +1,71 @@
+### **Workflow for "User Reviews for Vehicles" Feature**
+
+This is the step-by-step user journey and how the system will handle user reviews.
+
+---
+
+### **1. User Interaction**
+#### **a. Viewing Reviews for a Vehicle**
+- The user navigates to a vehicle's details page.
+- The system fetches and displays all reviews related to that vehicle.
+- The user can see the reviewer’s name, rating (if applicable), and comment.
+
+#### **b. Adding a Review**
+- The user logs in (if not already logged in).
+- On the vehicle details page, they see a form to add a review.
+- They enter a review (e.g., "Great car!", "Smooth ride", etc.).
+- The system validates the input (e.g., no empty reviews, no excessive characters).
+- The review is saved in the database and linked to the user and vehicle.
+- The user sees their review instantly on the page.
+
+#### **c. Deleting a Review**
+- The user sees a delete button next to their own reviews.
+- Clicking delete removes the review after confirmation.
+- The page updates to reflect the change.
+
+---
+
+### **2. Backend Workflow (MVC Architecture)**
+#### **a. Model (Database Interaction)**
+- A **`reviews`** table is created with:
+  - `id` (Primary Key)
+  - `vehicle_id` (Foreign Key)
+  - `user_id` (Foreign Key)
+  - `review_text`
+  - `created_at`
+- The `ReviewModel` will have:
+  - `addReview(vehicle_id, user_id, review_text)`
+  - `getReviews(vehicle_id)`
+  - `deleteReview(review_id, user_id)`
+
+#### **b. Controller (Business Logic)**
+- **GET `/vehicle/:id`** → Fetch and display reviews.
+- **POST `/reviews/add`** → Validate input, insert review into the database.
+- **POST `/reviews/delete`** → Check permissions, delete review.
+
+#### **c. View (Frontend)**
+- Vehicle details page includes:
+  - A section listing all reviews.
+  - A form for submitting a new review.
+  - A delete button for a user’s own reviews.
+
+---
+
+### **3. Best Practices**
+✅ **Prepared statements** to prevent SQL injection.
+✅ **Input validation** (required fields, character limits).
+✅ **Error handling** (show user-friendly messages).
+✅ **Authorization** (users can only delete their own reviews).
+
+---
+
+### **Final Flow**
+1. **User visits vehicle page** → Sees existing reviews.
+2. **Logged-in user submits a review** → Review is validated and saved.
+3. **User sees their review appear** immediately.
+4. **User deletes their own review** if needed.
+5. **System ensures security & performance** with best practices.
+
+---
+
+Would you like specific code snippets for each part? 🚀

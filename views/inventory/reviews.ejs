@@ -1,0 +1,28 @@
+
+<h1>Vehicle Reviews</h1>
+
+<% if (reviews.length > 0) { %>
+    <ul>
+        <% reviews.forEach(review => { %>
+            <li>
+                <p><strong><%= review.account_firstname %> <%= review.account_lastname %></strong> - <%= review.review_date.toLocaleString() %></p>
+                <p><%= review.review_text %></p>
+                <% if (account && account.account_id === review.account_id) { %>
+                    <form action="/reviews/delete/<%= review.review_id %>" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>No reviews yet. Be the first to leave one!</p>
+<% } %>
+
+<form action="/reviews/add" method="POST">
+    <input type="hidden" name="invId" value="<%= invId %>">
+    <input type="hidden" name="accountId" value="<%= account.account_id %>">
+    <textarea name="reviewText" placeholder="Write your review..." required></textarea>
+    <button type="submit">Submit Review</button>
+</form>
+

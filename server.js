@@ -19,6 +19,7 @@ const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute.js");
 const accountRoute = require('./routes/accountRoute.js');
 const messageRoute = require('./routes/messageRoute.js');
+const reviewRoute = require('./routes/reviewRoute');
 const intentionalErrorRoute = require("./routes/intentionalErrorRoute.js");
 const utilities = require("./utilities/index.js");
 const pool = require("./database");
@@ -73,6 +74,9 @@ app.use(static);
 app.get("/", utilities.handleErrors(baseController.buildHome));
 // Inventory routes
 app.use("/inv", inventoryRoute);
+
+app.use('/rev', reviewRoute);
+
 // Account routes
 app.use("/account", accountRoute);
 // Message routes

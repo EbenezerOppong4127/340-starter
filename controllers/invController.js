@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model");
+const reviewModel = require("../models/review-model");
 const utilities = require("../utilities/");
 
 const invCont = {};
@@ -40,9 +41,12 @@ invCont.buildByClassificationId = async function (req, res, next) {
  */
 invCont.buildByInventoryId = async function (req, res, next) {
   const inventoryId = req.params.inventoryId;
+  // Fetch reviews for this vehicle
+  const reviews = await reviewModel.getReviewsByInventoryId(inventoryId);
   //const data = await invModel.getInventoryByInventoryId(inventoryId + 5); // Buggy code
   const data = await invModel.getInventoryByInventoryId(inventoryId); // Clean code
   const listing = await utilities.buildItemListing(data[0]);
+  const reviewSection = await utilities.buildReviewSection(reviews, res.locals.accountData?.account_id, inventoryId);
   let nav = await utilities.getNav();
   const itemName = `${data[0].inv_make} ${data[0].inv_model}`;
 
@@ -50,6 +54,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
     title: itemName,
     nav,
     listing,
+    reviews: reviewSection,
   });
 };
 
@@ -96,36 +101,29 @@ invCont.buildAddClassification = async function (req, res, next) {
  * @param {import('express').NextFunction} next
  */
 invCont.addClassification = async function (req, res, next) {
-  try {
-    const { classification_name } = req.body;
-    const response = await invModel.addClassification(classification_name); // Save classification
+  const { classification_name } = req.body;
 
-    let nav = await utilities.getNav(); // Update navigation
-    const classificationSelect = await utilities.buildClassificationList(); // Fetch classification list
-
-    if (response) {
-      req.flash(
-          "notice",
-          `The "${classification_name}" classification was successfully added.`
-      );
-      res.render("inventory/management", {
-        title: "Vehicle Management",
-        errors: null,
-        nav,
-        classification_name,
-        classificationSelect, // Ensure this variable is passed
-      });
-    } else {
-      req.flash("notice", `Failed to add ${classification_name}`);
-      res.render("inventory/addClassification", {
-        title: "Add New Classification",
-        errors: null,
-        nav,
-        classification_name,
-      });
-    }
-  } catch (error) {
-    next(error);
+  const response = await invModel.addClassification(classification_name); // ...to a function within the inventory model...
+  let nav = await utilities.getNav(); // After query, so it shows new classification
+  if (response) {
+    req.flash(
+      "notice",
+      `The "${classification_name}" classification was successfully added.`
+    );
+    res.render("inventory/management", {
+      title: "Vehicle Management",
+      errors: null,
+      nav,
+      classification_name,
+    });
+  } else {
+    req.flash("notice", `Failed to add ${classification_name}`);
+    res.render("inventory/addClassification", {
+      title: "Add New Classification",
+      errors: null,
+      nav,
+      classification_name,
+    });
   }
 };
 
