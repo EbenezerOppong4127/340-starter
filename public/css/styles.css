@@ -352,7 +352,7 @@ section.car-listing dl dt {
   color: rgba(0, 0, 0, 0.27)
 }
 .input-box input:invalid, .input-box textarea:invalid, .input-box select:invalid {
-  border-right: 5px solid red;
+  border-right: 5px solid #ffffff;
 }
 .input-box input[type="submit"] {
   font-size: 1rem;
